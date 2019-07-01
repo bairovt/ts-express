@@ -35,4 +35,4 @@ lerna-debug.log*
 
 .env
 config/development.json
-src/db/config/dbconfig.json
+src/db/config/config.json
