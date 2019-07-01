@@ -1,13 +1,11 @@
 import express from "express";
-import { any } from "bluebird";
+import asyncWrapper from "../utils/async-wrapper";
 const db = require("../db/models");
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  db.User.findAll()
-    .then((users: any) => {
-      res.send(users)
-    });
-})
+router.get('/', asyncWrapper(async (req: any, res: any) => {
+  const users = await db.User.findAll();
+  res.send(users)
+}));
 
 export default router;
