@@ -1,10 +1,19 @@
 import sequelize from "../lib/db";
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+const checkConnection = async () => {
+  try {
+    await sequelize.authenticate()
+  } catch (error) {
+    return console.error('Unable to connect to the database:', error);
+  }
+  console.log('Connection has been established successfully.');
+}
+
+checkConnection()
+  .then(() => sequelize.close())
+  .then(() => console.log('connection closed'));
+
+
+
+
+
