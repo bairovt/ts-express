@@ -3,6 +3,7 @@ import express from 'express';
 const morgan = require('morgan');
 import bodyParser from 'body-parser';
 import auth from './middleware/auth';
+import errorHandler from './middleware/error-handler';
 import asyncWrapper from './utils/async-wrapper';
 
 const serverPort = config.get('server.port')
@@ -19,6 +20,8 @@ app.get('/', (req, res) => {
 
 import users from './routes/users'
 app.use('/users', users);
+
+app.use(errorHandler);
 
 app.listen(serverPort, () => {
   // tslint:disable-next-line:no-console
