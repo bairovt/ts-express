@@ -1,7 +1,9 @@
 import express from "express";
 import asyncWrapper from "../utils/async-wrapper";
+import config from 'config';
+const jwt = require('jsonwebtoken');
 const db = require("../db/models");
-const router = express.Router()
+const router = express.Router();
 
 router.get('/', asyncWrapper(async (req: any, res: any) => {
   const users = await db.User.findAll();
@@ -16,12 +18,16 @@ router.post('/login', asyncWrapper(async (req: any, res: any) => {
   if (!user) return res.status(401).send();
   const passOk = await user.checkPassword(password);
   if (!passOk) return res.status(401).send();
+  const payload = {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName
+  }
+  const secretKey = config.get('secretKey');
+  const token = jwt.sign(payload, secretKey);
   return res.send({
-    user: {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName
-    }
+    token,
+    user: payload
   });
 }));
 
