@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 
-export default function () {
+function randomString() {
   return crypto.randomBytes(32).toString("base64");
 }
+
+export default randomString;
