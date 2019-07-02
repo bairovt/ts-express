@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const db = require("../db/models");
 import randomString from "../utils/random-string";
 const router = express.Router();
+import checkRole from '../filters/check-role';
 
 router.get('/', asyncWrapper(async (req: any, res: any) => {
   const users = await db.User.findAll();
@@ -32,21 +33,24 @@ router.post('/login', asyncWrapper(async (req: any, res: any) => {
   });
 }));
 
-router.post('/add', asyncWrapper(async (req: any, res: any) => {
-  const { userData } = req.body;
-  const salt = randomString();
-  const pass_hash = await db.User.hashPassword(salt, userData.password);
-  const newUser = await db.User.create({
-    firstName: userData.firstName,
-    lastName: userData.lastName,
-    email: userData.email,
-    role: userData.role,
-    salt,
-    pass_hash
-  });
-  return res.send({
-    newUserId: newUser.id
-  });
-}));
+router.post('/add',
+  checkRole('admin'),
+  asyncWrapper(async (req: any, res: any) => {
+    const { userData } = req.body;
+    const salt = randomString();
+    const pass_hash = await db.User.hashPassword(salt, userData.password);
+    const newUser = await db.User.create({
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      role: userData.role,
+      salt,
+      pass_hash
+    });
+    return res.send({
+      newUserId: newUser.id
+    });
+  })
+);
 
 export default router;
