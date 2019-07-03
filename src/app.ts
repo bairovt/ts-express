@@ -20,8 +20,10 @@ app.get('/', (req, res) => {
 
 import users from './routes/users'
 import clients from './routes/clients'
+import products from './routes/products'
 app.use('/users', users);
 app.use('/clients', clients);
+app.use('/products', products);
 
 app.use(errorHandler);
 
