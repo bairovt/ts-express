@@ -1,24 +1,19 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Client = sequelize.define('Client', {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
+  const Product = sequelize.define('Product', {
     name: DataTypes.STRING,
     info: DataTypes.TEXT,
+    unit: DataTypes.STRING(20),
     created_user_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
   }, {});
-  Client.associate = function (models) {
-    Client.belongsTo(models.User, {
+  Product.associate = function (models) {
+    Product.belongsTo(models.User, {
       foreignKey: 'created_user_id',
       as: 'creator',
     })
   };
-  return Client;
+  return Product;
 };
