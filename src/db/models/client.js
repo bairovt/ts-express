@@ -18,7 +18,12 @@ module.exports = (sequelize, DataTypes) => {
     Client.belongsTo(models.User, {
       foreignKey: 'created_user_id',
       as: 'creator',
-    })
+    });
+    Client.hasMany(models.Order, {
+      sourceKey: 'id',
+      foreignKey: 'client_id',
+      as: 'orders',
+    });
   };
   return Client;
 };

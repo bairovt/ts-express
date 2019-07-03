@@ -5,20 +5,20 @@ const router = express.Router();
 import checkRole from '../filters/check-role';
 
 router.get('/', asyncWrapper(async (req: any, res: any) => {
-  const clients = await db.Client.findAll();
-  res.send(clients)
+  const orders = await db.Order.findAll();
+  res.send(orders)
 }));
 
 router.post('/',
-  checkRole('admin'),
   asyncWrapper(async (req: any, res: any) => {
-    const { clientData } = req.body;
-    const newClient = await req.user.createClient({
-      name: clientData.name,
-      info: clientData.info
+    const { orderData } = req.body;
+    const newOrder = await db.Order.create({
+      delivery_date: orderData.delivery_date,
+      client_id: orderData.client_id,
+      created_user_id: req.user.id
     });
     return res.send({
-      newClientId: newClient.id
+      newOrderId: newOrder.id
     });
   })
 );

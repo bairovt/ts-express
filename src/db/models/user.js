@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'created_user_id',
       as: 'products'
     });
+    User.hasMany(models.Order, {
+      sourceKey: 'id',
+      foreignKey: 'created_user_id',
+      as: 'orders'
+    });
   };
   User.hashPassword = function (salt, password) {
     return new Promise((resolve, reject) => {

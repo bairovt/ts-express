@@ -9,7 +9,7 @@ router.get('/', asyncWrapper(async (req: any, res: any) => {
   res.send(products)
 }));
 
-router.post('/add',
+router.post('/',
   checkRole('admin'),
   asyncWrapper(async (req: any, res: any) => {
     const { productData } = req.body;
