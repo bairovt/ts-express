@@ -19,7 +19,9 @@ app.get('/', (req, res) => {
 })
 
 import users from './routes/users'
+import clients from './routes/clients'
 app.use('/users', users);
+app.use('/clients', clients);
 
 app.use(errorHandler);
 

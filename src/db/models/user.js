@@ -20,7 +20,11 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   User.associate = function (models) {
-    // associations can be defined here
+    User.hasMany(models.Client, {
+      sourceKey: 'id',
+      foreignKey: 'created_user_id',
+      as: 'clients'
+    })
   };
   User.hashPassword = function (salt, password) {
     return new Promise((resolve, reject) => {
