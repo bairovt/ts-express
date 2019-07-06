@@ -40,4 +40,27 @@ router.post('/',
   })
 );
 
+router.delete('/:orderId',
+  // todo: allow action only for admins or creators and only in CREATED statuses
+  asyncWrapper(async (req: any, res: any, next: any) => {
+    const { orderId } = req.params;
+    const order = await db.Order.findByPk(orderId);
+    if (!order) return res.status(404).send();
+    const transaction = await db.sequelize.transaction();
+    try {
+      await db.OrderProduct.destroy({
+        where: {
+          order_id: orderId
+        }
+      }, { transaction });
+      await order.destroy({ transaction });
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      return next(error);
+    }
+    return res.send();
+  })
+);
+
 export default router;
