@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
     Product.belongsTo(models.User, {
       foreignKey: 'created_user_id',
       as: 'creator',
-    })
+    });
+    Product.belongsToMany(models.Order, {
+      through: models.OrderProduct,
+      foreignKey: 'product_id'
+    });
   };
   return Product;
 };

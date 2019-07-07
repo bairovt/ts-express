@@ -5,7 +5,28 @@ const router = express.Router();
 import checkRole from '../filters/check-role';
 
 router.get('/', asyncWrapper(async (req: any, res: any) => {
-  const orders = await db.Order.findAll();
+  const orders = await db.Order.findAll({
+    attributes: ['id', 'createdAt', 'delivery_date'],
+    where: {
+      status: 'CREATED'
+    },
+    include: [{
+      model: db.User,
+      as: 'creator',
+      attributes: ['id', 'firstName', 'lastName']
+    }, {
+      model: db.Client,
+      as: 'client',
+      attributes: ['id', 'name']
+    }, {
+      model: db.Product,
+      attributes: ['id', 'name'],
+      // required: true,
+      through: {
+        attributes: ['qty']
+      }
+    }]
+  });
   res.send(orders)
 }));
 

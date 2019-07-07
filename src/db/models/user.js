@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
-      unique: true
+      unique: true,
+      validate: { isEmail: true }
     },
     pass_hash: DataTypes.STRING,
     salt: DataTypes.STRING,
