@@ -51,9 +51,9 @@ router.post('/',
       });
       await Promise.all(createPromises);
       await transaction.commit();
-    } catch (error) {
+    } catch (err) {
       await transaction.rollback();
-      return next(error);
+      return next(err);
     }
     return res.send({
       newOrderId: newOrder.id
@@ -76,9 +76,9 @@ router.delete('/:orderId',
       }, { transaction });
       await order.destroy({ transaction });
       await transaction.commit();
-    } catch (error) {
+    } catch (err) {
       await transaction.rollback();
-      return next(error);
+      return next(err);
     }
     return res.send();
   })

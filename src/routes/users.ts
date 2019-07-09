@@ -13,6 +13,7 @@ router.get('/', asyncWrapper(async (req: any, res: any) => {
 }));
 
 router.post('/login', asyncWrapper(async (req: any, res: any) => {
+  // todo: input validation
   const { email, password } = req.body;
   const user = await db.User.findOne({
     where: { email }
@@ -23,13 +24,13 @@ router.post('/login', asyncWrapper(async (req: any, res: any) => {
   const payload = {
     id: user.id,
     firstName: user.firstName,
-    lastName: user.lastName
+    lastName: user.lastName,
+    role: user.role
   }
   const secretKey = config.get('secretKey');
   const token = jwt.sign(payload, secretKey);
   return res.send({
     token,
-    user: payload
   });
 }));
 

@@ -5,9 +5,7 @@ export default function (role: string) {
     if (req.user.role === role) {
       next()
     } else {
-      res.status(403).send({
-        error: 'permission denied'
-      })
+      res.status(403).send({ message: 'Permission denied' })
     }
   })
 }

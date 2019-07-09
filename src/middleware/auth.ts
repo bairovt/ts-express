@@ -5,7 +5,7 @@ const secretKey = require('config').get('secretKey');
 
 /* authentication middleware */
 export default async function (req: any, res: any, next: any) {
-  if (['/users/login'].includes(req.path)) {
+  if (['/api/users/login'].includes(req.path)) {
     return next();
   }
   const authHeader = req.get('Authorization');
